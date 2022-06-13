@@ -82,7 +82,7 @@ No máximo 2 níveis
 }
 ```
 # Componetizando um botão
-
+spread operator
 ~~~tsx
 import { ButtonHTMLAttributes } from 'react';
 
@@ -129,3 +129,11 @@ export function Button(props: ButtonProps) {
     };
   }, []);
   ~~~
+
+  # alterar regras do firebase
+  {
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
