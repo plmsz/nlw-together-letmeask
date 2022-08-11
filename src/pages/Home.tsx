@@ -4,7 +4,7 @@ import googleIconImg from '../assets/images/google-icon.svg';
 import '../styles/auth.scss';
 import { Button } from './../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from './../contexts/useAuth';
+import { useAuth } from '../hooks/useAuth';
 import { FormEvent, useState } from 'react';
 import { child, database, ref } from '../services/firebase';
 import { get } from 'firebase/database';

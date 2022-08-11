@@ -194,7 +194,9 @@ export function RoomCode(props: RoomCodeProps) {
 ```
 
 # Record - tipando um objeto
+
 - chave é uma string e valor é um objeto
+
 ```tsx
 type FirebaseQuestions = Record<
   string,
@@ -230,6 +232,22 @@ const parsedQuestions = Object.entries(firebaseQuestions).map(
 // {id: '-N4TZcRUe9-wpVBOO_X2', content: 'como usar o useffect?'}
 // ]
 ```
+
 # Evento de retrieving data
+
 O value fica escutando sempre que qualquer informação mudar. o que torna não muita perfomático
 https://firebase.google.com/docs/database/admin/retrieve-data#node.js_1
+
+# scss sibiling
+& - o proprio eleemnto + (irmão)
+logo aplica a partir da segunda question
+````scss
+.question {
+  background: #fefefe;
+
+  & + .question {
+    margin-top: 8px;
+  }
+  }
+    ```
+````
