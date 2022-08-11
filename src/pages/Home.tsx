@@ -8,6 +8,8 @@ import { useAuth } from './../contexts/useAuth';
 import { FormEvent, useState } from 'react';
 import { child, database, ref } from '../services/firebase';
 import { get } from 'firebase/database';
+import { on } from 'stream';
+import { once } from 'events';
 
 export function Home() {
   const navigate = useNavigate();
@@ -32,7 +34,6 @@ export function Home() {
     get(child(roomRef, `rooms/${roomCode}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          // console.log(snapshot.val());
           navigate(`rooms/${roomCode}`);
         } else {
           alert('Room does not exist');

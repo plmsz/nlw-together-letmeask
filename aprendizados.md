@@ -5,9 +5,12 @@ https://firebase.google.com/docs/database/web/start
 yarn add node-sass@6.0.0 (node 16)
 yarn add react-router-dom
 yarn add @types/react-router-dom
- 
- # Futuro?
- - logout
+
+# Futuro?
+
+- logout
+- mensagens de erro com hot toast
+
 # Sass
 
 No máximo 2 níveis
@@ -81,59 +84,152 @@ No máximo 2 níveis
   }
 }
 ```
+
 # Componetizando um botão
+
 spread operator
-~~~tsx
+
+```tsx
 import { ButtonHTMLAttributes } from 'react';
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function Button(props: ButtonProps) {
-  return <button className='button'{...props} />;
+  return <button className='button' {...props} />;
 }
-~~~
+```
 
 ## disableButton
 
-~~~scss
+```scss
 &:not(disabled):hover {
-    filter: brightness(0.9);
-  }
+  filter: brightness(0.9);
+}
 
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-~~~
+&:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+```
 
 # useeffect e eventlistener
- - Toda vez que vc declara um event.listener vc tem obrigação de desacadstrar o eventlistener, no final do useefect
-~~~tsx
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        const { displayName, photoURL, uid } = user;
-        if (!displayName || !photoURL) {
-          throw new Error('Missing information from Google account');
-        }
-        setUser({
-          id: uid,
-          name: displayName,
-          avatar: photoURL,
-        });
+
+- Toda vez que vc declara um event.listener vc tem obrigação de desacadstrar o eventlistener, no final do useefect
+
+```tsx
+useEffect(() => {
+  const unsubscribe = auth.onAuthStateChanged((user) => {
+    if (user) {
+      const { displayName, photoURL, uid } = user;
+      if (!displayName || !photoURL) {
+        throw new Error('Missing information from Google account');
       }
-    });
+      setUser({
+        id: uid,
+        name: displayName,
+        avatar: photoURL,
+      });
+    }
+  });
 
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-  ~~~
+  return () => {
+    unsubscribe();
+  };
+}, []);
+```
 
-  # alterar regras do firebase
-  {
-  "rules": {
-    ".read": true,
-    ".write": true
-  }
+# alterar regras do firebase
+
+{
+"rules": {
+".read": true,
+".write": true
 }
+}
+
+---
+
+https://firebase.google.com/docs/rules/basics?hl=pt_br&authuser=0#realtime-database
+https://firebase.google.com/docs/rules?hl=pt_br&authuser=0
+
+{
+"rules": {
+"rooms": {
+".read": false,
+".write": "auth != null",
+"$roomId": {
+".read": true,
+".write": "auth != null && (!data.exists() || data.child('authorId').val() == auth.id)",
+"questions": {
+".read": true,
+".write": "auth != null && (!data.exists() || data.parent().child('authorId').val() == auth.id)",
+"likes": {
+".read": true,
+".write": "auth != null && (!data.exists() || data.child('authorId').val() == auth.id)",  
+ }
+}
+}
+}
+}
+}
+
+# Copiar para área de transferência
+
+```tsx
+type RoomCodeProps = {
+  code: string;
+};
+
+export function RoomCode(props: RoomCodeProps) {
+  function copyRoomCodeToClipboard() {
+    navigator.clipboard.writeText(props.code);
+  }
+
+  return (
+    <button className='room-code' onClick={copyRoomCodeToClipboard}>
+      <span>Sala #{props.code}</span>
+    </button>
+  );
+}
+```
+
+# Record - tipando um objeto
+- chave é uma string e valor é um objeto
+```tsx
+type FirebaseQuestions = Record<
+  string,
+  {
+    author: {
+      name: string;
+      avatar: string;
+    };
+    isHighlighted: boolean;
+    isAnswered: boolean;
+  }
+>;
+```
+
+# Objeto em array
+
+```tsx
+//objeto
+/* {
+  -N4TZOJDBaCXwWutHFrt: {content: "o que é useref?", isAnswered: false}, 
+  -N4TZcRUe9-wpVBOO_X2: {content: 'como usar o useffect?', isAnswered: false} */
+const parsedQuestions = Object.entries(firebaseQuestions).map(
+  ([key, value]) => {
+    return {
+      id: key,
+      content: value.content,
+    };
+  }
+);
+// retorna
+// [
+// {id: '-N4TZOJDBaCXwWutHFrt', content: 'o que é useref?'}
+// {id: '-N4TZcRUe9-wpVBOO_X2', content: 'como usar o useffect?'}
+// ]
+```
+# Evento de retrieving data
+O value fica escutando sempre que qualquer informação mudar. o que torna não muita perfomático
+https://firebase.google.com/docs/database/admin/retrieve-data#node.js_1
