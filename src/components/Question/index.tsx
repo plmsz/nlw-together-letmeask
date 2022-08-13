@@ -1,5 +1,8 @@
-import './styles.scss'
+import './styles.scss';
+import { ReactNode } from 'react';
+
 type QuestionProps = {
+  children?: ReactNode;
   content: string;
   author: {
     name: string;
@@ -9,16 +12,20 @@ type QuestionProps = {
   isAnswered: boolean;
 };
 
-export function Question({ content, author }: QuestionProps) {
+export function Question({ content, author, children }: QuestionProps) {
   return (
     <div className='question'>
       <p>{content}</p>
       <footer>
         <div className='user-info'>
-          <img src={author.avatar} alt={author.name} />
+          <img
+            src={author.avatar}
+            alt={author.name}
+            referrerPolicy='no-referrer'
+          />
           <span>{author.name}</span>
         </div>
-        <div></div>
+        <div>{children}</div>
       </footer>
     </div>
   );

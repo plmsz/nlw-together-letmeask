@@ -1,5 +1,9 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
-import { auth, GoogleAuthProvider, signInWithPopup } from '../services/firebase';
+import {
+  auth,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from '../services/firebase';
 
 type User = {
   id: string;
@@ -35,11 +39,12 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
         });
       }
     });
-
+    
     return () => {
       unsubscribe();
     };
   }, []);
+  
 
   async function signInWithGoogle() {
     const provider = new GoogleAuthProvider();

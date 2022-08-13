@@ -114,7 +114,7 @@ export function Button(props: ButtonProps) {
 
 # useeffect e eventlistener
 
-- Toda vez que vc declara um event.listener vc tem obrigação de desacadstrar o eventlistener, no final do useefect
+- Toda vez que vc declara um event.listener vc tem obrigação de descadastrar o eventlistener, no final do useefect
 
 ```tsx
 useEffect(() => {
@@ -137,7 +137,50 @@ useEffect(() => {
   };
 }, []);
 ```
+```tsx
+export function useRoom(roomId: string) {
+  const [questions, setQuestions] = useState<QuestionsType[]>([]);
+  const [title, setTitle] = useState('');
+  const { user } = useAuth();
 
+  useEffect(() => {
+    const db = database;
+    const reference = ref(db, `rooms/${roomId}`);
+    onValue(
+      reference,
+      (snapshot) => {
+        const room = snapshot.val();
+        const firebaseQuestions: FirebaseQuestions = room.questions;
+        const parsedQuestions = Object.entries(firebaseQuestions).map(
+          ([key, value]) => {
+            return {
+              id: key,
+              content: value.content,
+              author: value.author,
+              isHighlighted: value.isHighlighted,
+              isAnswered: value.isAnswered,
+              likeCount: Object.values(value.likes ?? {}).length,
+              hasLiked: Object.values(value.likes ?? {}).some(
+                (like) => like.authorId === user?.id
+              ),
+            };
+          }
+        );
+        setTitle(room.title);
+        setQuestions(parsedQuestions);
+      },
+      {
+        onlyOnce: false,
+      }
+    );
+    return () => {
+      off(reference, 'value');
+    };
+  }, [roomId, user?.id]);
+
+  return { title, questions };
+}
+```
 # alterar regras do firebase
 
 {
@@ -210,6 +253,20 @@ type FirebaseQuestions = Record<
   }
 >;
 ```
+-likes é um objeto que a chave é uma string e o valor é um objeto que o valor é uma string
+```tsx
+type FirebaseQuestions = Record<
+  string,
+  {
+    author: {
+      name: string;
+      avatar: string;
+    };
+    isHighlighted: boolean;
+    isAnswered: boolean;
+    likes: Record<string, { authorId: string }>;
+  }
+>;
 
 # Objeto em array
 
@@ -251,3 +308,8 @@ logo aplica a partir da segunda question
   }
     ```
 ````
+# noreferrer
+a imagem aparecia intermitente
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+
+<img src={user.avatar} alt={user.name} referrerPolicy='no-referrer'/>
