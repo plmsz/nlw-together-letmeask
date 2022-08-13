@@ -314,3 +314,6 @@ a imagem aparecia intermitente
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 
 <img src={user.avatar} alt={user.name} referrerPolicy='no-referrer'/>
+
+# pacote classnames
+<div className={`question ${isAnswered ? 'answered' : ''} ${isHighlighted ? 'highlighted' : ''}`}>
