@@ -33,16 +33,18 @@ export function Home() {
 
     get(child(roomRef, `rooms/${roomCode}`))
       .then((snapshot) => {
-        if (snapshot.exists()) {
+        if (snapshot.val().endedAt) {
+          alert('Room already closed');
+        } else if (snapshot.exists()) {
           navigate(`rooms/${roomCode}`);
         } else {
           alert('Room does not exist');
+          return;
         }
       })
       .catch((error) => {
         console.error(error);
       });
-
   }
 
   return (

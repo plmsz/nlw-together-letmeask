@@ -2,12 +2,12 @@ import logoImg from '../assets/images/logo.svg';
 import { Button } from './../components/Button';
 import '../styles/room.scss';
 import { RoomCode } from './../components/RoomCode';
-import { useParams } from 'react-router-dom';
-import { useState, FormEvent } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { child, database, push, ref, set } from '../services/firebase';
+import { useNavigate, useParams } from 'react-router-dom';
+import { database, ref } from '../services/firebase';
 import { Question } from '../components/Question';
 import { useRoom } from '../hooks/useRoom';
+import { remove, update } from 'firebase/database';
+import deleteImg from '../assets/images/delete.svg';
 
 type RoomParams = {
   id: string;
@@ -16,40 +16,23 @@ type RoomParams = {
 export function AdminRoom() {
   const params = useParams<RoomParams>();
   const roomId = params.id || '';
-  const [newQuestion, setNewQuestion] = useState('');
-  const { user } = useAuth();
   const { title, questions } = useRoom(roomId);
-  async function hanldeSendQuestion(event: FormEvent) {
-    event.preventDefault();
+  const navigate = useNavigate();
 
-    if (newQuestion.trim() === '') {
-      return;
-    }
-    if (!user) {
-      throw new Error('Você deve estar logado.');
-    }
-
-    const question = {
-      content: newQuestion,
-      author: {
-        name: user.name,
-        avatar: user.avatar,
-      },
-      isHighlighted: false,
-      isAnswered: false,
-    };
-
-    const newQuestionKey = push(
-      child(ref(database), `rooms/${roomId}/questions`)
-    ).key;
-    await set(
-      ref(database, `rooms/${roomId}/questions/${newQuestionKey}`),
-      question
-    );
-
-    setNewQuestion('');
+  async function handleEndRoom() {
+    const dbRef = ref(database, `rooms/${roomId}`);
+    await update(dbRef, {
+      endedAt: new Date(),
+    });
+    navigate('/');
   }
 
+  async function handleDeleteQuestion(questionId: string) {
+    if (window.confirm('Tem certeza que você deseja excluir esta pergunta?')) {
+      const dbRef = ref(database, `rooms/${roomId}/questions/${questionId}`);
+      await remove(dbRef);
+    }
+  }
   return (
     <div id='page-room'>
       <header>
@@ -57,7 +40,7 @@ export function AdminRoom() {
           <img src={logoImg} alt='Letmeask' />
           <div>
             <RoomCode code={roomId || ''} />
-            <Button isOutlined>Encerrar a sala</Button>
+            <Button isOutlined onClick={handleEndRoom}>Encerrar a sala</Button>
           </div>
         </div>
       </header>
@@ -72,7 +55,14 @@ export function AdminRoom() {
         </div>
         <div className='question-list'>
           {questions.map((question) => (
-            <Question {...question} key={question.id} />
+            <Question {...question} key={question.id}>
+              <button
+                type='button'
+                onClick={() => handleDeleteQuestion(question.id)}
+              >
+                <img src={deleteImg} alt='Remover pergunta' />
+              </button>
+            </Question>
           ))}
         </div>
       </main>

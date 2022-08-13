@@ -8,6 +8,7 @@ import { useAuth } from '../hooks/useAuth';
 import { child, database, push, ref, set } from '../services/firebase';
 import { Question } from '../components/Question';
 import { useRoom } from '../hooks/useRoom';
+import { remove } from 'firebase/database';
 
 type RoomParams = {
   id: string;
@@ -19,6 +20,7 @@ export function Room() {
   const [newQuestion, setNewQuestion] = useState('');
   const { user } = useAuth();
   const { title, questions } = useRoom(roomId);
+
 
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault();
@@ -51,9 +53,13 @@ export function Room() {
     setNewQuestion('');
   }
 
-  async function handleLikeQuestion(questionId: string, hasLiked: boolean) {
-    if (hasLiked) {
-      //remove like
+  async function handleLikeQuestion(questionId: string, likedId?: string) {
+    if (likedId) {
+      const dbRef = ref(
+        database,
+        `rooms/${roomId}/questions/${questionId}/likes/${likedId}`
+      );
+      await remove(dbRef);
     } else {
       const newLikeKey = push(
         child(ref(database), `rooms/${roomId}/questions/${questionId}/likes`)
@@ -118,12 +124,10 @@ export function Room() {
           {questions.map((question) => (
             <Question {...question} key={question.id}>
               <button
-                className={`like-button ${question.hasLiked ? 'liked' : ''}`}
+                className={`like-button ${question.likeId ? 'liked' : ''}`}
                 type='button'
                 aria-label='Marcar como gostei'
-                onClick={() =>
-                  handleLikeQuestion(question.id, question.hasLiked)
-                }
+                onClick={() => handleLikeQuestion(question.id, question.likeId)}
               >
                 {question.likeCount > 0 && <span>{question.likeCount} </span>}
                 <svg

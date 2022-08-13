@@ -8,8 +8,9 @@ yarn add @types/react-router-dom
 
 # Futuro?
 
+- mensagens de erro com hot toast - alert
+- modal - confirm
 - logout
-- mensagens de erro com hot toast
 
 # Sass
 
