@@ -1,3 +1,19 @@
+# Futuro?
+
+- mensagens de erro com hot toast - alert
+- responsividade
+- modal - confirm
+- nome da sala - fix
+- ao criar sala - ir para adminroom
+- tema dark/light - preferencia do usuario - stage 4
+- logout
+- icones de marcar como respondida e destaque - transformar em função
+- lista de salas no input
+- reabrir uma sala
+- apenas admin acessa rota de admin (pessoa que criou a sala poder acessa-lá)
+- PWA
+
+# Firebase
 yarn add firebase  
 https://firebase.google.com/docs/auth/web/google-signin
 https://firebase.google.com/docs/database/web/start
@@ -6,11 +22,6 @@ yarn add node-sass@6.0.0 (node 16)
 yarn add react-router-dom
 yarn add @types/react-router-dom
 
-# Futuro?
-
-- mensagens de erro com hot toast - alert
-- modal - confirm
-- logout
 
 # Sass
 
@@ -317,3 +328,18 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 
 # pacote classnames
 <div className={`question ${isAnswered ? 'answered' : ''} ${isHighlighted ? 'highlighted' : ''}`}>
+
+# hosting
+https://firebase.google.com/docs/hosting/quickstart?hl=pt-br
+
+npm install -g firebase-tools
+firebase login
+firebase init
+
+https://create-react-app.dev/docs/deployment#firebase
+
+* caso faça a github action
+
+yarn build
+
+firebase deploy

@@ -33,11 +33,11 @@ export function Home() {
 
     get(child(roomRef, `rooms/${roomCode}`))
       .then((snapshot) => {
-        if (snapshot.val().endedAt) {
+        if (snapshot?.val()?.endedAt) {
           alert('Room already closed');
-        } else if (snapshot.exists()) {
+        } else if (snapshot?.exists()) {
           navigate(`rooms/${roomCode}`);
-        } else {
+        } else if (!snapshot.exists()) {
           alert('Room does not exist');
           return;
         }
@@ -52,7 +52,7 @@ export function Home() {
       <aside>
         <img src={illustrationImg} alt='' />
         <strong>Crie salas de Q&amp;A ao-vivo</strong>
-        <p>Tire as dúvidas da sua audiência em tempo-real</p>
+        <p>Tire as dúvidas da sua audiência em tempo-real!</p>
       </aside>
       <main>
         <div className='main-content'>
