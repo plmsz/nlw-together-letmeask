@@ -1,5 +1,5 @@
 # Futuro?
-
+- BUG : titulo sala usuario diferente do que criou a sala?
 - mensagens de erro com hot toast - alert
 - responsividade
 - modal - confirm
@@ -10,6 +10,9 @@
 - icones de marcar como respondida e destaque - transformar em função
 - lista de salas no input
 - reabrir uma sala
+- Exibir uma sala fechada, mas sem permitir criação de perguntas e dar like
+- Permitindo ordernar perguntas pela quantidade ou pela data
+- Responder a pergunta por escrito
 - apenas admin acessa rota de admin (pessoa que criou a sala poder acessa-lá)
 - PWA
 

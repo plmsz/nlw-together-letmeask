@@ -1,6 +1,6 @@
 <div align="center">
-  <img src="./sorteio/src/assets/Logo_Sena.png" alt='logo de trevo' />
   <h1 align="center">Let me ask</h1>
+  <img src="./src/assets/images/logo.svg" alt='tela' />
 </div>
 
 ## 💻 Projeto
@@ -72,26 +72,20 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - Redirecionamento para tela de erro pelo interceptor do axios
 - Botão voltar para o topo
 
+-->
 ## 📱 Telas
 
 <div align="center">
-  <img src="./sorteio/src/assets/tela0.png" title="Tela inicial, enquanto carrega" width="800" />
+  <img src="./public/home.png" alt='tela inicial' width='800'/>
 </div>
 <div align="center">
-  <img src="./sorteio/src/assets/tela1.png" title="Tela inicial" width="800" />
+  <img src="./public/room.png" alt='tela do usuário' width='800' />
 </div>
 <div align="center">
-  <img src="./sorteio/src/assets/tela404.png" title="Tela de página não encotrada" width="800" />
-</div>
-<div align="center">
-  <img src="./sorteio/src/assets/telaError.png" title="Tela de erro" width="800" />
-</div>
-<div align="center">
-  <img src="./sorteio/src/assets/tela1mobile.png" title="Tela inicial versão mobile" height='300' />
-  <img src="./sorteio/src/assets/backbutton.png" title="Tela versão mobile mostrar botão de voltar ao topo" height='300' />
+  <img src="./public/adminroom.png" alt='tela do administrador' width='800'/>
 </div>
 
-<br/> -->
+<br/> 
 
 ---
 
